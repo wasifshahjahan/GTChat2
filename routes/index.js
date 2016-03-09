@@ -5,21 +5,21 @@ var status = false;
 var sql = require("mssql");
 
 var Connection = require("tedious").Connection;
-var dbConfig = {
+/* var dbConfig = {
     server: "192.168.1.244",
     user: "sa",
     password: "sa@123",   
     port: 1433,
     options: { encrypt: true, database: 'PankajNodeJs' }
-};
+}; */
 
-//var dbConfig = {
-//    userName: 'gtadmin1@jxqw748l9k',
-//    password: 'M0rph!us',
-//    server: 'jxqw748l9k.database.windows.net',
-//    // If you are on Azure SQL Database, you need these next options.
-//    options: { encrypt: true, database: 'PankajNodeJs' }
-//};
+var dbConfig = {
+    userName: 'gtadmin1@jxqw748l9k',
+    password: 'M0rph!us',
+    server: 'jxqw748l9k.database.windows.net',
+    // If you are on Azure SQL Database, you need these next options.
+   options: { encrypt: true, database: 'PankajNodeJs' }
+};
 
 var mycon = new Connection(dbConfig);
 mycon.on('connect', function (err) { console.log("New Pankaj connection connect to sql db"); });
