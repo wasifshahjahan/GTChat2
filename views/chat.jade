@@ -1,0 +1,110 @@
+﻿doctype html
+html
+  head
+    title Chating With GT-Team::Pankaj   
+    script(src='https://cdn.socket.io/socket.io-1.2.0.js')
+    script(src='http://code.jquery.com/jquery-1.11.1.js')  
+     
+  body
+    h1  Chating With GT-Team::Pankaj ,Status
+    p#pankaj #{pankaj}
+    ul#messages
+    span#notifyUser
+    form#form(action='', onsubmit='return submitfunction();')
+      input#user(type='hidden', value='')
+      input#m(autocomplete='off', onkeyup='notifyTyping();', placeholder='Type your message here to chat with Pankaj Kumar..')
+      input#button(type='submit', value='Send')
+
+
+ 
+    script.
+      var socket = io();
+      function submitfunction() {
+      var from = $('#user').val();
+      var message = $('#m').val();
+      if (message != '') {
+      socket.emit('chatMessage', from, message);
+      }
+      $('#m').val('').focus();
+      return false;
+      }
+      function notifyTyping() {
+      var user = $('#user').val();
+      socket.emit('notifyUser', user);
+      }
+      socket.on('chatMessage', function (from, msg) {
+      var me = $('#user').val();
+      var color = (from == me) ? 'green' : '#009afd';
+      var from = (from == me) ? 'Me' : from;
+      $('#messages').append('<li><b style="color:' + color + '">' + from + '</b>: ' + msg + '</li>');
+      });
+      socket.on('notifyUser', function (user) {
+      var me = $('#user').val();
+      if (user != me) {
+      $('#notifyUser').text(user + ' is typing ...');
+      }
+      setTimeout(function () { $('#notifyUser').text(''); }, 10000);;
+      });
+      $(document).ready(function () {
+      var name = makeid();
+      $('#user').val(name);
+      socket.emit('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
+      });
+      function makeid() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for (var i = 0; i < 5; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      text=$('#pankaj').text();
+      return text;
+      }
+
+
+
+
+style.
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      }
+      body {
+      font: 13px Helvetica, Arial;
+      }
+      form {
+      background: #000;
+      padding: 3px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      }
+      form input {
+      border: 0;
+      padding: 10px;
+      width: 90%;
+      margin-right: .5%;
+      }
+      form #button {
+      color: #FFF;
+      background: #2D9F0B;
+      border: none;
+      padding: 10px;
+      width: 9%;
+      }
+      #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      }
+      #messages li {
+      padding: 5px 10px;
+      }
+      #messages li:nth-child(odd) {
+      background: #eee;
+      }
+      #notifyUser {
+      position: fixed;
+      bottom: 42px;
+      width: 100%;
+      }
